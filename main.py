@@ -24,7 +24,7 @@ ydl_opts = {"format": "bestaudio", "quiet": True}
 async def start(client, message):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("➕ Add to Group", url=f"https://t.me/{client.me.username}?startgroup=true")],
-        [InlineKeyboardButton("👑 Owner", url="https://t.me/your_username"),
+        [InlineKeyboardButton("👑 Owner", url="https://t.me/Vidyarthi_12"),
          InlineKeyboardButton("🆘 Help", callback_data="help")]
     ])
     
