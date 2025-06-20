@@ -1,12 +1,12 @@
 import os
+import asyncio
+import requests
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pytgcalls import PyTgCalls, idle
 from pytgcalls.types.input_stream import InputAudioStream
 from yt_dlp import YoutubeDL
 from PIL import Image, ImageDraw, ImageFont
-import asyncio
-import requests
 
 API_ID = int(os.getenv("API_ID"))
 API_HASH = os.getenv("API_HASH")
@@ -14,7 +14,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 SESSION_STRING = os.getenv("SESSION_STRING")
 OWNER_ID = int(os.getenv("OWNER_ID"))
 
-bot = Client("bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
+bot = Client("vc_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 user = Client(session_string=SESSION_STRING, api_id=API_ID, api_hash=API_HASH)
 vc = PyTgCalls(user)
 
@@ -24,16 +24,14 @@ ydl_opts = {"format": "bestaudio", "quiet": True}
 async def start(client, message):
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("➕ Add to Group", url=f"https://t.me/{client.me.username}?startgroup=true")],
-        [InlineKeyboardButton("👑 Owner", url="https://t.me/Vidyarthi_12"),
+        [InlineKeyboardButton("👑 Owner", url="https://t.me/your_username"),
          InlineKeyboardButton("🆘 Help", callback_data="help")]
     ])
-    
     caption = (
         "🎧 **Welcome to VC Music Bot** 🎶\n\n"
         "I’m a powerful Telegram VC player bot that streams music directly into group voice chats.\n\n"
         "✨ **Created by Prince** 💻"
     )
-    
     await message.reply_photo(
         photo="startup_banner.jpg",
         caption=caption,
