@@ -1,5 +1,6 @@
 import os
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pytgcalls import PyTgCalls, idle
 from pytgcalls.types.input_stream import InputAudioStream
 from yt_dlp import YoutubeDL
@@ -21,8 +22,37 @@ ydl_opts = {"format": "bestaudio", "quiet": True}
 
 @bot.on_message(filters.command("start"))
 async def start(client, message):
-    banner = "startup_banner.jpg"
-    await message.reply_photo(photo=banner, caption="🎶 Welcome to VC Music Bot!\nCreated by Prince 💻")
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("➕ Add to Group", url=f"https://t.me/{client.me.username}?startgroup=true")],
+        [InlineKeyboardButton("👑 Owner", url="https://t.me/your_username"),
+         InlineKeyboardButton("🆘 Help", callback_data="help")]
+    ])
+    
+    caption = (
+        "🎧 **Welcome to VC Music Bot** 🎶\n\n"
+        "I’m a powerful Telegram VC player bot that streams music directly into group voice chats.\n\n"
+        "✨ **Created by Prince** 💻"
+    )
+    
+    await message.reply_photo(
+        photo="startup_banner.jpg",
+        caption=caption,
+        reply_markup=keyboard
+    )
+
+@bot.on_callback_query(filters.regex("help"))
+async def help_callback(client, callback_query: CallbackQuery):
+    txt = (
+        "**🎧 VC Music Bot Help**\n"
+        "Created by 👑 Prince\n\n"
+        "`/play <song>` - Play music in VC\n"
+        "`/pause` - Pause music\n"
+        "`/resume` - Resume music\n"
+        "`/stop` - Stop and leave VC\n"
+        "`/logo <text>` - Create logo\n"
+        "`/help` - Show this help again"
+    )
+    await callback_query.message.edit_text(txt)
 
 @bot.on_message(filters.command("play") & filters.group)
 async def play(_, message):
@@ -82,21 +112,6 @@ async def logo(_, message):
     img.save("logo.jpg")
     await message.reply_photo("logo.jpg")
 
-@bot.on_message(filters.command("help"))
-async def help(_, message):
-    txt = (
-        "**🎧 VC Music Bot Help**\n"
-        "Created by 👑 Prince\n\n"
-        "`/play song` - Play music\n"
-        "`/pause` - Pause music\n"
-        "`/resume` - Resume music\n"
-        "`/stop` - Leave voice chat\n"
-        "`/logo text` - Make logo\n"
-        "`/help` - Show this help\n\n"
-        "[📢 Join Updates Channel](https://t.me/yourchannel)"
-    )
-    await message.reply(txt, disable_web_page_preview=True)
-
 async def main():
     await bot.start()
     await user.start()
@@ -105,4 +120,3 @@ async def main():
     await idle()
 
 asyncio.run(main())
-                
