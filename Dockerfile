@@ -1,4 +1,5 @@
-FROM python:3.10
+FROM python:3.10-slim
+
 
 # System dependencies
 RUN apt update && apt install -y ffmpeg libopus-dev libwebp-dev git
